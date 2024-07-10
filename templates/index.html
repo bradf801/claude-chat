@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vertex AI PaLM API Chat Demo</title>
+    <title>Basic Claude Chat UI</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
@@ -71,7 +71,7 @@
   </head>
   <body>
     <div class="chat-container">
-      <h1>Vertex AI PaLM API Chat</h1>
+      <h1>Basic Claude Chat UI</h1>
       <form id="chat-form">
         <input
           type="text"
@@ -83,19 +83,22 @@
       </form>
       <div id="result"></div>
     </div>
-
     <script>
       window.onload = function () {
         document
           .getElementById("chat-form")
           .addEventListener("submit", function (event) {
-            // Prevent the form from submitting and refreshing the page
             event.preventDefault();
-
+    
             let userInput = document.getElementById("user-input").value;
-            let url = `/palm2?user_input=${encodeURIComponent(userInput)}`;
-
-            fetch(url)
+            
+            fetch('/chat', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ user_input: userInput }),
+            })
               .then((response) => response.json())
               .then((data) => {
                 let content = data.content;
@@ -103,7 +106,7 @@
                 resultDiv.innerHTML = content;
               })
               .catch((error) => {
-                console.error("Error fetching PaLM response:", error);
+                console.error("Error fetching Claude response:", error);
               });
           });
       };
