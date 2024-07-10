@@ -83,19 +83,22 @@
       </form>
       <div id="result"></div>
     </div>
-
     <script>
       window.onload = function () {
         document
           .getElementById("chat-form")
           .addEventListener("submit", function (event) {
-            // Prevent the form from submitting and refreshing the page
             event.preventDefault();
-
+    
             let userInput = document.getElementById("user-input").value;
-            let url = `/chat?user_input=${encodeURIComponent(userInput)}`;
-
-            fetch(url)
+            
+            fetch('/chat', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ user_input: userInput }),
+            })
               .then((response) => response.json())
               .then((data) => {
                 let content = data.content;
